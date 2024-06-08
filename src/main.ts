@@ -1,25 +1,22 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
+import { ValidationPipe } from "@nestjs/common";
+import * as cookieParser from 'cookie-parser';
+import { setupSwagger } from "./docs/swagger.config";
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  app.enableCors({
-    allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Authorization'],        
-    origin: ['https://farmegg.vercel.app', 'http://localhost:3000'],
+  app.enableCors({        
+    origin: process.env.FRONTEND_URL,
     credentials: true,
   });
 
-  const config = new DocumentBuilder()
-  .setTitle('Agenda Ágil')
-  .setDescription('API para a aplicação Agenda Ágil, organizado pelo programa voluntário Pipoca Ágil.')
-  .setVersion('1.0')
-  .addTag('agenda', 'agil')
-  .build();
-  
-  const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, document);
+  app.useGlobalPipes(new ValidationPipe())
+  app.use(cookieParser())
+
+  setupSwagger(app)
 
   await app.listen(process.env.PORT);
 }
