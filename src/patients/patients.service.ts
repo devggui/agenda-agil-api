@@ -8,11 +8,10 @@ import { PrismaService } from "src/prisma.service";
 export class PatientsService {
   constructor(private readonly prisma: PrismaService) {}
 
-  create(createPatientDto: CreatePatientDto, userId: string): Promise<Patient> {
+  create(createPatientDto: CreatePatientDto): Promise<Patient> {
     return this.prisma.patient.create({
       data: {
         ...createPatientDto,
-        userId,
       },
     });
   }

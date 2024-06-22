@@ -4,7 +4,7 @@ import { AuthModule } from './auth/auth.module';
 import { PatientsModule } from './patients/patients.module';
 
 @Module({
-  imports: [UsersModule, AuthModule, PatientsModule],
+  imports: [PatientsModule],
   controllers: [],
   providers: [],
 })

@@ -11,18 +11,14 @@ export class PatientsController {
   @Post()
   create(
     @Body() createPatientDto: CreatePatientDto,
-    @Request() req: { currentUser: User }
+    
   ) {
-    return this.patientsService.create(createPatientDto, req.currentUser.id);
+    return this.patientsService.create(createPatientDto);
   }
 
   @Get()
-  findAll(@Request() req: { currentUser: User }) {
-    return this.patientsService.findAll({
-      where: {
-        userId: req.currentUser.id
-      }
-    });
+  findAll() {
+    return this.patientsService.findAll({});
   }
 
   @Get(':id')
